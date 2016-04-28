@@ -38,7 +38,7 @@ public class NivTestStatusAndPerson {
 		nA = "Anne";
 		nB = "Ben";
 		nC = "Cody";
-		pA = new PersonImpl(1, nA);
+		pA = new PersonImpl(1, nA); //git test
 		pB = new PersonImpl(2, nB);
 		pC = new PersonImpl(3, nC);
 		sA = new StatusImpl(pA, stA, 1);
