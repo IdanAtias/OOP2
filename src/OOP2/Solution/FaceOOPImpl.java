@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -183,12 +184,99 @@ public class FaceOOPImpl implements FaceOOP {
 			throw new PersonNotInSystemException();
 		return new StatusIteratorImpl(p.getFriends(), false);
 	}
-
+	
+	class PersonVertex {
+		Person person;
+		int d = -1;
+		PersonVertex (Person p) {
+			person = p;
+		}
+		
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((person == null) ? 0 : person.hashCode());
+			return result;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			PersonVertex other = (PersonVertex) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (person == null) {
+				if (other.person != null)
+					return false;
+			} else if (!person.equals(other.person))
+				return false;
+			return true;
+		}
+		private FaceOOPImpl getOuterType() {
+			return FaceOOPImpl.this;
+		}
+	}
+	
+	class BFSEmulator {
+		//updates all the reachable vertexes online (during the BFS run) 
+		Set<PersonVertex> usersVertexes = new HashSet<PersonVertex>(); 
+		//the queue for the BFS Algorithm
+		LinkedList<Person> bfsQueue = new LinkedList<Person>();
+		Person source, target;
+		
+		//constructor
+		BFSEmulator(Person source, Person target) {
+			this.source = source;
+			this.target = target;
+			bfsQueue.add(source);
+			PersonVertex source_vertex = new PersonVertex(source); 
+			source_vertex.d = 0;
+			usersVertexes.add(source_vertex);
+		}
+		
+		int getDistance (Person p) {
+			for (PersonVertex person_vertex : usersVertexes) {
+				if ((person_vertex.person).equals(p)) return  person_vertex.d;
+			}
+			return -1;
+		}
+		
+		Integer runBfs() throws ConnectionDoesNotExistException {
+			if (source.equals(target)) return 0;
+			while (!bfsQueue.isEmpty()) {
+				Person parent= bfsQueue.getFirst();
+				bfsQueue.removeFirst();
+				int parent_d = this.getDistance(parent);
+				for (Person friend : parent.getFriends()){
+					PersonVertex friend_vertex = new PersonVertex(friend);
+					if (!usersVertexes.contains(friend_vertex)) {
+						friend_vertex.d = parent_d + 1;
+						usersVertexes.add(friend_vertex);
+						bfsQueue.addLast(friend);
+					}
+				}
+			}
+			int target_d = this.getDistance(target);
+			if (target_d < 0)
+				throw new ConnectionDoesNotExistException();
+			return target_d;
+		}
+	}
+	
 	@Override
 	public Integer rank(Person source, Person target)
 			throws PersonNotInSystemException, ConnectionDoesNotExistException {
-		
-		return null;
+		if (!users.contains(source) || !users.contains(target)) {
+			throw new PersonNotInSystemException();
+		}
+		BFSEmulator bfs = new BFSEmulator(source, target);
+		return bfs.runBfs();
 	}
-
 }
