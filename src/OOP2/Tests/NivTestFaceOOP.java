@@ -173,7 +173,7 @@ public class NivTestFaceOOP {
 	 * few vertexes and edges, this test will not test complexity, only
 	 * correctness on small graphs
 	 */
-/*	@Test
+	@Test
 	public void FaceOOPTestRank() {
 		Boolean caught = false;
 		try {
@@ -231,7 +231,7 @@ public class NivTestFaceOOP {
 		} catch (Exception e) {
 			fail();
 		}
-	}*/
+	}
 
 	/**
 	 * A stress test for joinFaceOPP() adding up 4000 members to faceOPP and
@@ -276,7 +276,7 @@ public class NivTestFaceOOP {
 				Person current = fo.getUser(i);
 				// the graph is a line, so the distance to the first person
 				// should be equal to i
-				//assertTrue(fo.rank(current, first) == i-1); todo - remove cmt
+				assertTrue(fo.rank(current, first) == i-1);
 			} catch (Exception e) {
 				fail("getUser() or rank()");
 			}
@@ -302,14 +302,14 @@ public class NivTestFaceOOP {
 		assertTrue("size()", fo.size() == 4000);
 		try {
 			// yet another connection we entered last time
-			//assertTrue("rank()", fo.rank(fo.getUser(2), fo.getUser(2 * 2 + 7)) == 1); todo-remove cmt
+			assertTrue("rank()", fo.rank(fo.getUser(2), fo.getUser(2 * 2 + 7)) == 1);
 		} catch (Exception e) {
 			fail("getUser() or rank()");
 		}
 		try {
 			// the maximum rank of users i and j is |i-j| because this is a
 			// line.
-			//assertTrue("rank()", fo.rank(fo.getUser(7), fo.getUser(832)) <= 832 - 7);todo - remove cmt
+			assertTrue("rank()", fo.rank(fo.getUser(7), fo.getUser(832)) <= 832 - 7);
 		} catch (Exception e) {
 			fail("getUser() or rank()");
 		}
