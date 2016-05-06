@@ -33,7 +33,7 @@ public class FaceOOPImpl implements FaceOOP {
 	/**
 	 * Constructor - receives no parameters and initializes the system.
 	 */
-	public FaceOOPImpl () {
+	public FaceOOPImpl() {
 	}
 
 	@Override
