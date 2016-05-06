@@ -33,8 +33,8 @@ public class FaceOOPImpl implements FaceOOP {
 	/**
 	 * Constructor - receives no parameters and initializes the system.
 	 */
-	public FaceOOPImpl() { //checking pull request / sync??
-	}
+
+	public FaceOOPImpl() { }
 
 	@Override
 	private Person joinFaceOOP(Integer id, String name) throws PersonAlreadyInSystemException {
