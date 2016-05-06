@@ -37,7 +37,7 @@ public class FaceOOPImpl implements FaceOOP {
 	}
 
 	@Override
-	public Person joinFaceOOP(Integer id, String name) throws PersonAlreadyInSystemException {
+	private Person joinFaceOOP(Integer id, String name) throws PersonAlreadyInSystemException {
 		Person user = new PersonImpl(id, name);
 		if (users.contains(user)) {
 			throw (new PersonAlreadyInSystemException());
