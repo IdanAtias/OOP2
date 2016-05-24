@@ -77,18 +77,20 @@ public class FaceOOPImpl implements FaceOOP {
 		final List<Person> users;
 		Person curr_user; //holds curr user in 'users' collection
 		Person next_user; //holds next user in 'users' collection
+		boolean isNotLast;/*ch5*/
 		
 		public FriendsIterator(Set<Person> users) {
 			this.users = new ArrayList<Person>(users);
 			Collections.sort(this.users, new PersonComparator());
 			curr_user = null;
 			next_user = null;
+			isNotLast = false; /*ch4*/
 		}
 		@Override public boolean hasNext() {
-			boolean isNotLast = false;
+			if (next_user != null && curr_user == null) return true; //ch1
 			for (Person user: users){
 				//if its the first time we use hasNext or user is not last we return 'true':
-				if ((curr_user == null && next_user == null) || isNotLast){
+				if ((curr_user == null && next_user == null && isNotLast /*ch2*/) || isNotLast){
 					next_user = user; // updating field
 					return true;
 				}
@@ -96,10 +98,12 @@ public class FaceOOPImpl implements FaceOOP {
 					isNotLast = true;
 				}
 			}
+			isNotLast = false; /*ch3*/
 			return false;
 		}
 		@Override public Person next() {
-			curr_user = hasNext() ? next_user:null;
+			curr_user = (hasNext()) ? next_user:null;
+			if (curr_user == null) next_user = null; /*ch4*/
 			return curr_user;
 		}
 		
